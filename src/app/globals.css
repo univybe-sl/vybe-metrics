@@ -1,26 +1,65 @@
 @import "tailwindcss";
+@import "@heroui/styles";
 
+/* Dark mode is driven by the `dark` class on <html> (set by ThemeToggle). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Univybe brand: orange accent from the reference design.
+   Swap these two values for Univybe's official brand colour. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --accent: oklch(0.68 0.19 41);
+  --accent-foreground: oklch(0.99 0 0);
+  --chart-muted: oklch(0.93 0.035 50);
+  /* Page behind the centered dashboard frame — a step darker than the frame. */
+  --page: oklch(0.925 0 0);
+  /* The centered dashboard frame: fill, hairline edge and drop shadow. */
+  --frame: var(--background);
+  --frame-edge: oklch(0 0 0 / 0.04);
+  --frame-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 12px 40px -8px oklch(0 0 0 / 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --accent: oklch(0.72 0.18 45);
+  --chart-muted: oklch(0.33 0.04 45);
+  /* Three clearly separated layers: page < frame < cards. */
+  --page: oklch(0.11 0 0);
+  --frame: oklch(0.18 0.005 285.8);
+  --surface: oklch(0.245 0.006 285.9);
+  --frame-edge: oklch(1 0 0 / 0.1);
+  --frame-shadow: 0 0 0 1px oklch(0 0 0 / 0.6), 0 24px 70px -10px oklch(0 0 0 / 0.85),
+    0 0 90px -20px color-mix(in oklab, var(--accent) 18%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Lift the frame off the page; full-bleed (no frame) on phones. */
+@media (width >= 40rem) {
+  .dashboard-frame {
+    border: 1px solid var(--frame-edge);
+    box-shadow: var(--frame-shadow);
   }
 }
 
+@theme inline {
+  --font-sans: var(--font-jakarta);
+  --color-chart-muted: var(--chart-muted);
+  --color-page: var(--page);
+  --color-frame: var(--frame);
+}
+
+html,
 body {
-  background: var(--background);
+  background: var(--page);
+}
+
+body {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+}
+
+/* Recharts: inherit theme colours for axes/grid. */
+.recharts-cartesian-axis-tick-value {
+  fill: var(--muted);
+  font-size: 11px;
+}
+.recharts-tooltip-cursor {
+  fill: color-mix(in oklab, var(--accent) 8%, transparent);
 }
