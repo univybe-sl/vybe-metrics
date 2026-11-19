@@ -4,19 +4,41 @@
 /* Dark mode is driven by the `dark` class on <html> (set by ThemeToggle). */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Univybe brand accent (gold), from the UniVybe Brand Concept:
-   accent #b68235, ramp 100 #fff3e4 · 200 #ffe3bf · 300 #facb8d · 400 #e1ad66 ·
-   500 #c28d41 · 600 #a06f24 · 700 #7d5411 · 800 #5a3b0a · 900 #3a270d. */
+/* UniVybe brand palette, from the UniVybe Brand Concept: warm paper, dark ink, gold.
+   bg #f3f2f2 · surface #eae9e9 · text #201f1d · accent #b68235
+   accent ramp  100 #fff3e4 · 200 #ffe3bf · 300 #facb8d · 400 #e1ad66 · 500 #c28d41 ·
+                600 #a06f24 · 700 #7d5411 · 800 #5a3b0a · 900 #3a270d
+   neutral ramp 100 #f8f4f4 · 200 #eae7e7 · 300 #d7d3d3 · 400 #bab6b6 · 500 #9b9797 ·
+                600 #7d7979 · 700 #605d5d · 800 #444141 · 900 #2d2b2b
+   These override HeroUI's cool (blue-tinted) neutrals, which live in a lower layer. */
 :root {
   --accent: #b68235;
   --accent-foreground: #ffffff;
   --chart-muted: #ffe3bf;
+
+  --foreground: #201f1d;
+  --muted: #605d5d;
+  --background: #f3f2f2;
+  --surface: #f8f4f4;
+  --surface-secondary: #eae9e9;
+  --surface-tertiary: #eae7e7;
+  --overlay: #f8f4f4;
+  --default: #eae9e9;
+  --default-foreground: #201f1d;
+  --field-background: #f8f4f4;
+  --field-foreground: #201f1d;
+  --segment: #f8f4f4;
+  --segment-foreground: #201f1d;
+  --border: #d7d3d3;
+  --separator: #e3dfdf;
+
   /* Page behind the centered dashboard frame — a step darker than the frame. */
-  --page: oklch(0.925 0 0);
+  --page: #eae7e7;
   /* The centered dashboard frame: fill, hairline edge and drop shadow. */
   --frame: var(--background);
-  --frame-edge: oklch(0 0 0 / 0.04);
-  --frame-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 12px 40px -8px oklch(0 0 0 / 0.1);
+  --frame-edge: color-mix(in srgb, #201f1d 6%, transparent);
+  --frame-shadow: 0 1px 2px color-mix(in srgb, #2d2b2b 6%, transparent),
+    0 12px 40px -8px color-mix(in srgb, #2d2b2b 14%, transparent);
 }
 
 .dark {
@@ -25,11 +47,28 @@
   --accent: #e1ad66;
   --accent-foreground: #201f1d;
   --chart-muted: #5a3b0a;
+
+  /* Warm darks continued from the brand's neutral ramp (no blue tint). */
+  --foreground: #f3f2f2;
+  --muted: #9b9797;
+  --background: #1b1a19;
+  --surface-secondary: #2d2b2b;
+  --surface-tertiary: #34322f;
+  --overlay: #262423;
+  --default: #2d2b2b;
+  --default-foreground: #f3f2f2;
+  --field-background: #262423;
+  --field-foreground: #f3f2f2;
+  --segment: #444141;
+  --segment-foreground: #f3f2f2;
+  --border: #3a3837;
+  --separator: #2f2d2c;
+
   /* Three clearly separated layers: page < frame < cards. */
-  --page: oklch(0.11 0 0);
-  --frame: oklch(0.18 0.005 285.8);
-  --surface: oklch(0.245 0.006 285.9);
-  --frame-edge: oklch(1 0 0 / 0.1);
+  --page: #121110;
+  --frame: #1b1a19;
+  --surface: #262423;
+  --frame-edge: color-mix(in srgb, #f3f2f2 10%, transparent);
   --frame-shadow: 0 0 0 1px oklch(0 0 0 / 0.6), 0 24px 70px -10px oklch(0 0 0 / 0.85),
     0 0 90px -20px color-mix(in oklab, var(--accent) 18%, transparent);
 }
