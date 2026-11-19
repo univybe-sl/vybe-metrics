@@ -1,6 +1,7 @@
 "use client";
 
 import { BookOpen, LayoutDashboard, LogOut, Users, Wallet } from "lucide-react";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { logout } from "@/app/login/actions";
@@ -38,11 +39,19 @@ export function Sidebar() {
               title={label}
               aria-label={label}
               aria-current={active ? "page" : undefined}
-              className={`flex size-10 items-center justify-center rounded-full transition ${
-                active ? "bg-accent text-accent-foreground" : "text-muted hover:bg-default hover:text-foreground"
+              className={`relative flex size-10 items-center justify-center rounded-full transition-colors ${
+                active ? "text-accent-foreground" : "text-muted hover:bg-default hover:text-foreground"
               }`}
             >
-              <Icon size={18} />
+              {/* One shared pill that glides to whichever item is active. */}
+              {active && (
+                <motion.span
+                  layoutId="sidebar-active"
+                  className="absolute inset-0 rounded-full bg-accent"
+                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                />
+              )}
+              <Icon size={18} className="relative" />
             </Link>
           );
         })}

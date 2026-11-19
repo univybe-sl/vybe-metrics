@@ -69,6 +69,13 @@ h4 {
   font-weight: 600;
 }
 
+/* While a date-range change loads, dim everything under the page header so
+   old numbers can't be mistaken for new ones. */
+[data-pending] > :not(header) {
+  opacity: 0.6;
+  transition: opacity 150ms ease-out;
+}
+
 /* Recharts: inherit theme colours for axes/grid. */
 .recharts-cartesian-axis-tick-value {
   fill: var(--muted);

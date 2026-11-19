@@ -37,6 +37,9 @@ const tooltipStyle = {
   labelStyle: { color: "var(--muted)", marginBottom: 4 },
 };
 
+/** Quick draw-in; on a range change Recharts morphs from the old shape to the new. */
+const CHART_MS = 600;
+
 const axis = { tickLine: false, axisLine: false, minTickGap: 16 } as const;
 
 /** Smooth area line with soft accent gradient — "Marketing performance" style. */
@@ -63,6 +66,7 @@ export function AreaTrend({ data, format, height = 260 }: { data: Point[]; forma
             strokeWidth={2.5}
             fill={`url(#g${id})`}
             activeDot={{ r: 5, stroke: "var(--surface)", strokeWidth: 2, fill: "var(--accent)" }}
+            animationDuration={CHART_MS}
           />
         </AreaChart>
       </ResponsiveContainer>
@@ -87,7 +91,7 @@ export function BarTrend({ data, format, height = 260 }: { data: Point[]; format
           <XAxis dataKey="label" {...axis} />
           <YAxis {...axis} width={48} allowDecimals={false} tickFormatter={(v: number) => fmt(format, v, true)} />
           <Tooltip {...tooltipStyle} cursor={false} formatter={(v) => [fmt(format, Number(v)), ""]} separator="" />
-          <Bar dataKey="value" radius={[999, 999, 999, 999]} maxBarSize={36}>
+          <Bar dataKey="value" radius={[999, 999, 999, 999]} maxBarSize={36} animationDuration={CHART_MS}>
             {data.map((_, i) => (
               <Cell key={i} fill={i === highlighted ? "var(--accent)" : "var(--chart-muted)"} />
             ))}
@@ -115,8 +119,8 @@ export function CoinFlowChart({ data, height = 260 }: { data: CoinFlowPoint[]; h
             iconSize={8}
             formatter={(v: string) => <span className="text-xs text-muted">{COIN_SERIES[v] ?? v}</span>}
           />
-          <Bar dataKey="earned" fill="var(--accent)" radius={[6, 6, 0, 0]} maxBarSize={18} />
-          <Bar dataKey="cashedOut" fill="var(--chart-muted)" radius={[6, 6, 0, 0]} maxBarSize={18} />
+          <Bar dataKey="earned" fill="var(--accent)" radius={[6, 6, 0, 0]} maxBarSize={18} animationDuration={CHART_MS} />
+          <Bar dataKey="cashedOut" fill="var(--chart-muted)" radius={[6, 6, 0, 0]} maxBarSize={18} animationDuration={CHART_MS} />
         </BarChart>
       </ResponsiveContainer>
     </div>

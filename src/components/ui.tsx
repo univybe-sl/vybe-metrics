@@ -2,6 +2,8 @@ import { Card, Chip } from "@heroui/react";
 import { ArrowDownRight, ArrowUpRight, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { formatPercent, percentChange } from "@/lib/format";
+import Link from "next/link";
+import { CountUp, Stagger, StaggerItem } from "./motion";
 
 export function Delta({ value, previous, inverse, onAccent }: { value: number; previous: number; inverse?: boolean; onAccent?: boolean }) {
   const change = percentChange(value, previous);
@@ -36,7 +38,10 @@ export function KpiCard({
   highlight,
   inverse,
   footnote,
+  href,
 }: {
+  /** Makes the card a link (with a hover lift); used on the overview. */
+  href?: string;
   title: string;
   value: string;
   icon: LucideIcon;
@@ -46,9 +51,11 @@ export function KpiCard({
   inverse?: boolean;
   footnote?: string;
 }) {
-  return (
+  const card = (
     <Card
-      className={`relative overflow-hidden rounded-3xl ${highlight ? "bg-accent text-accent-foreground" : ""}`}
+      className={`relative h-full overflow-hidden rounded-3xl ${
+        href ? "transition-transform duration-200 group-hover:-translate-y-0.5" : ""
+      } ${highlight ? "bg-accent text-accent-foreground" : ""}`}
     >
       {highlight && (
         <div aria-hidden className="pointer-events-none absolute -right-8 -bottom-10 size-36 rounded-full bg-white/15 blur-[1px]" />
@@ -64,7 +71,9 @@ export function KpiCard({
         <Card.Title className={`text-sm font-medium ${highlight ? "text-accent-foreground" : ""}`}>{title}</Card.Title>
       </Card.Header>
       <Card.Content className="gap-2">
-        <p className="text-2xl font-semibold tracking-tight sm:text-3xl">{value}</p>
+        <p className="text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl">
+          <CountUp value={value} id={title} />
+        </p>
         {current !== undefined && previous !== undefined ? (
           <Delta value={current} previous={previous} inverse={inverse} onAccent={highlight} />
         ) : (
@@ -72,6 +81,18 @@ export function KpiCard({
         )}
       </Card.Content>
     </Card>
+  );
+
+  return (
+    <StaggerItem>
+      {href ? (
+        <Link href={href} aria-label={`${title}: see details`} className="group block h-full rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+          {card}
+        </Link>
+      ) : (
+        card
+      )}
+    </StaggerItem>
   );
 }
 
@@ -118,7 +139,11 @@ export function StatusChip({ status }: { status: string }) {
 }
 
 export function KpiGrid({ children }: { children: ReactNode }) {
-  return <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">{children}</section>;
+  return (
+    <Stagger as="section" className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {children}
+    </Stagger>
+  );
 }
 
 export function EmptyState({ children }: { children: ReactNode }) {

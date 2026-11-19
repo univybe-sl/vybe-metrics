@@ -2,6 +2,7 @@ import { BookOpen, Coins, GraduationCap, Users, Wallet } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { AreaTrend, BarTrend, CoinFlowChart } from "@/components/charts";
+import { Stagger, StaggerItem } from "@/components/motion";
 import { PageHeader } from "@/components/page-header";
 import { DashboardSkeleton, DemoNotice, EmptyState, KpiCard, KpiGrid, Panel } from "@/components/ui";
 import { getDataSource } from "@/lib/data";
@@ -30,10 +31,10 @@ async function Overview({ searchParams }: { searchParams: PageProps<"/">["search
     <>
       <DemoNotice show={db.isDemo} />
       <KpiGrid>
-        <KpiCard highlight title="Revenue" icon={Wallet} value={formatLeones(data.revenue.value)} current={data.revenue.value} previous={data.revenue.previous} />
-        <KpiCard title="New students" icon={Users} value={formatNumber(data.newUsers.value)} current={data.newUsers.value} previous={data.newUsers.previous} />
-        <KpiCard title="Vybecoins earned" icon={Coins} value={formatCoins(data.coinsEarned.value)} current={data.coinsEarned.value} previous={data.coinsEarned.previous} />
-        <KpiCard title="Completion rate" icon={GraduationCap} value={formatPercent(data.completionRate.value)} current={data.completionRate.value} previous={data.completionRate.previous} />
+        <KpiCard href={`/revenue${qs}`} highlight title="Revenue" icon={Wallet} value={formatLeones(data.revenue.value)} current={data.revenue.value} previous={data.revenue.previous} />
+        <KpiCard href={`/users${qs}`} title="New students" icon={Users} value={formatNumber(data.newUsers.value)} current={data.newUsers.value} previous={data.newUsers.previous} />
+        <KpiCard href={`/revenue${qs}`} title="Vybecoins earned" icon={Coins} value={formatCoins(data.coinsEarned.value)} current={data.coinsEarned.value} previous={data.coinsEarned.previous} />
+        <KpiCard href={`/courses${qs}`} title="Completion rate" icon={GraduationCap} value={formatPercent(data.completionRate.value)} current={data.completionRate.value} previous={data.completionRate.previous} />
       </KpiGrid>
 
       <section className="grid gap-4 lg:grid-cols-5">
@@ -53,9 +54,9 @@ async function Overview({ searchParams }: { searchParams: PageProps<"/">["search
           {data.topCourses.length === 0 ? (
             <EmptyState>No enrollments in this period.</EmptyState>
           ) : (
-            <ol className="flex flex-col gap-3">
+            <Stagger as="ol" className="flex flex-col gap-3">
               {data.topCourses.map((c, i) => (
-                <li key={c.id}>
+                <StaggerItem as="li" key={c.id}>
                   <Link href={`/courses/${c.id}${qs}`} className="flex items-center gap-3 rounded-2xl p-1 transition hover:bg-default">
                     <span className={`flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${i === 0 ? "bg-accent text-accent-foreground" : "bg-default"}`}>
                       {i === 0 ? <BookOpen size={14} /> : i + 1}
@@ -71,9 +72,9 @@ async function Overview({ searchParams }: { searchParams: PageProps<"/">["search
                       <span className="text-muted">{formatCoins(c.coinsAwarded)} awarded</span>
                     </span>
                   </Link>
-                </li>
+                </StaggerItem>
               ))}
-            </ol>
+            </Stagger>
           )}
         </Panel>
       </section>
