@@ -4,12 +4,13 @@
 /* Dark mode is driven by the `dark` class on <html> (set by ThemeToggle). */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Univybe brand: orange accent from the reference design.
-   Swap these two values for Univybe's official brand colour. */
+/* Univybe brand accent (gold), from the UniVybe Brand Concept:
+   accent #b68235, ramp 100 #fff3e4 · 200 #ffe3bf · 300 #facb8d · 400 #e1ad66 ·
+   500 #c28d41 · 600 #a06f24 · 700 #7d5411 · 800 #5a3b0a · 900 #3a270d. */
 :root {
-  --accent: oklch(0.68 0.19 41);
-  --accent-foreground: oklch(0.99 0 0);
-  --chart-muted: oklch(0.93 0.035 50);
+  --accent: #b68235;
+  --accent-foreground: #ffffff;
+  --chart-muted: #ffe3bf;
   /* Page behind the centered dashboard frame — a step darker than the frame. */
   --page: oklch(0.925 0 0);
   /* The centered dashboard frame: fill, hairline edge and drop shadow. */
@@ -19,8 +20,11 @@
 }
 
 .dark {
-  --accent: oklch(0.72 0.18 45);
-  --chart-muted: oklch(0.33 0.04 45);
+  /* Lighter step of the brand ramp so it reads on the dark ground;
+     dark ink on it keeps button labels legible. */
+  --accent: #e1ad66;
+  --accent-foreground: #201f1d;
+  --chart-muted: #5a3b0a;
   /* Three clearly separated layers: page < frame < cards. */
   --page: oklch(0.11 0 0);
   --frame: oklch(0.18 0.005 285.8);
@@ -39,7 +43,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-jakarta);
+  --font-sans: var(--font-lora);
+  --font-heading: var(--font-cormorant);
   --color-chart-muted: var(--chart-muted);
   --color-page: var(--page);
   --color-frame: var(--frame);
@@ -52,7 +57,16 @@ body {
 
 body {
   color: var(--foreground);
-  font-family: var(--font-jakarta), system-ui, sans-serif;
+  font-family: var(--font-lora), Georgia, serif;
+}
+
+/* Brand headings: Cormorant Garamond, semibold at most (per the brand concept). */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 600;
 }
 
 /* Recharts: inherit theme colours for axes/grid. */

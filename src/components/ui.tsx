@@ -80,7 +80,7 @@ export function Panel({ title, description, action, children, className = "" }: 
     <Card className={`rounded-3xl ${className}`}>
       <Card.Header className="flex flex-row items-start justify-between gap-2">
         <div>
-          <Card.Title className="text-base font-semibold">{title}</Card.Title>
+          <Card.Title className="font-heading text-lg font-semibold">{title}</Card.Title>
           {description && <Card.Description className="text-xs">{description}</Card.Description>}
         </div>
         {action}
